@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
 export default function Film(props) {
   const [movie, setMovie] = useState();
+  const {kaydetmeFonksiyon} = props;
 
-  let id = 1;
+  let {id} = useParams();
   // URL'den alınan :id parametresini bu değişkene aktarın
 
   useEffect(() => {
@@ -13,6 +15,9 @@ export default function Film(props) {
       .then(response => {
           // Bu kısmı log statementlarıyla çalışın
           // ve burdan gelen response'u 'movie' e aktarın
+          setMovie(response.data);
+          console.log("setted film");
+          console.log(movie);
       })
       .catch(error => {
         console.error(error);
@@ -29,7 +34,7 @@ export default function Film(props) {
   }
 
   const { title, director, metascore, stars } = movie;
-
+ 
   return (
     <div className="save-wrapper">
       <div className="movie-card">
@@ -48,7 +53,7 @@ export default function Film(props) {
           </div>
         ))}
       </div>
-      <div className="save-button">Kaydet</div>
+      <div className="save-button" onClick={() => props.click(movie)}>Kaydet</div>
     </div>
   );
 }
